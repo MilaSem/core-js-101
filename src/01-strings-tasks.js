@@ -198,8 +198,22 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  const leftTop = String.fromCharCode(9484);
+  const dash = String.fromCharCode(9472);
+  const rightTop = String.fromCharCode(9488);
+  const pipe = String.fromCharCode(9474);
+  const leftBottom = String.fromCharCode(9492);
+  const rightBottom = String.fromCharCode(9496);
+  const lineBreak = '\n';
+  const space = ' ';
+
+  let strResult = leftTop + dash.repeat(width - 2) + rightTop + lineBreak;
+  const row = pipe + space.repeat(width - 2) + pipe + lineBreak;
+  strResult += row.repeat(height - 2);
+  strResult += leftBottom + dash.repeat(width - 2) + rightBottom + lineBreak;
+
+  return strResult;
 }
 
 /**
@@ -218,8 +232,28 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  let strResult = '';
+  function charCode(i) {
+    return str[i].charCodeAt();
+  }
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (
+      (charCode(i) >= 65 && charCode(i) <= 77)
+      || (charCode(i) >= 97 && charCode(i) <= 109)
+    ) {
+      strResult += String.fromCharCode(charCode(i) + 13);
+    } else if (
+      (charCode(i) >= 78 && charCode(i) <= 90)
+      || (charCode(i) >= 110 && charCode(i) <= 122)
+    ) {
+      strResult += String.fromCharCode(charCode(i) - 13);
+    } else {
+      strResult += str[i];
+    }
+  }
+  return strResult;
 }
 
 /**
@@ -263,8 +297,69 @@ function isString(value) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const arr = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
+
+  let result;
+  for (let i = 0; i < arr.length; i += 1) {
+    if (value === arr[i]) {
+      result = i;
+    }
+  }
+  return result;
 }
 
 module.exports = {
