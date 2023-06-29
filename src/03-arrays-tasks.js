@@ -495,8 +495,10 @@ function sortCitiesArray(arr) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  const arr = new Array(n).fill(0).map(() => new Array(n).fill(0));
+  arr.map((item, index) => item.splice(index, 1, 1));
+  return arr;
 }
 
 /**
@@ -609,8 +611,13 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  let templateArr = arr;
+  indexes.map((item) => {
+    templateArr = templateArr[item];
+    return templateArr; // каждый раз присваиваем в темп более глубокий массив
+  });
+  return templateArr || 'this element does not exist';
 }
 
 /**
