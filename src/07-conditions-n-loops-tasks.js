@@ -279,8 +279,28 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const lastDigit = Number(String(ccn).slice(-1)); // последняя цифра контрольная
+
+  // по алгоритму Луна массив нужно отразить
+  const arrDigits = String(ccn).slice(0, -1).split('').reverse();
+
+  const sum = (a, b) => Number(a) + Number(b);
+
+  const controlSum = arrDigits
+    .map((digit, index) => {
+      if (index % 2 !== 0) {
+        return Number(digit);
+      }
+      const multy = digit * 2;
+      if (multy > 9) {
+        return String(multy).split('').reduce(sum);
+      }
+      return multy;
+    })
+    .reduce(sum);
+
+  return (controlSum + lastDigit) % 10 === 0;
 }
 
 /**
@@ -297,8 +317,13 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const sum = (a, b) => Number(a) + Number(b);
+  const arrDigits = String(num).split('');
+
+  const result = arrDigits.reduce(sum);
+
+  return result < 9 ? result : String(result).split('').reduce(sum);
 }
 
 /**
@@ -322,8 +347,25 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+
+function isBracketsBalanced(str) {
+  const bracketsPairs = {
+    '}': '{',
+    ']': '[',
+    ')': '(',
+    '>': '<',
+  };
+  const temp = [];
+  for (let i = 0; i < str.length; i += 1) {
+    if (['}', ']', ')', '>'].indexOf(str[i]) !== -1) {
+      if (bracketsPairs[str[i]] !== temp.pop()) {
+        return false;
+      }
+    } else {
+      temp.push(str[i]);
+    }
+  }
+  return temp.length === 0;
 }
 
 /**
@@ -346,8 +388,9 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
@@ -362,8 +405,16 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+
+function getCommonDirectoryPath(pathes) {
+  let commonPath = '';
+  for (let i = 0; i < pathes[0].length; i += 1) {
+    const char = pathes[0][i];
+    if (pathes.every((item) => char === item[i])) {
+      commonPath += char;
+    } else break;
+  }
+  return commonPath.slice(0, commonPath.lastIndexOf('/') + 1);
 }
 
 /**
@@ -384,8 +435,29 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+
+function getMatrixProduct(m1, m2) {
+  const res = [];
+  // число строк m1 должно быть равно числу столбцов m2
+  // умножаем элементы первой строки на элементы первого столбца попарно
+  // это будет первый элемент результирующей матрицы
+  // складываем произведения, далее первую строку на второй столбец и т.д.
+  // далее вторую строку на первый столбец и т.д.
+
+  for (let r = 0; r < m1.length; r += 1) {
+    const row = [];
+
+    for (let c = 0; c < m2[r].length; c += 1) {
+      let sumProdacts = 0;
+
+      for (let i = 0; i < m1[r].length; i += 1) {
+        sumProdacts += m1[r][i] * m2[i][c];
+      }
+      row.push(sumProdacts);
+    }
+    res.push(row);
+  }
+  return res;
 }
 
 /**
